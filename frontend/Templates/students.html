@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Students</title>
+</head>
+<body>
+
+<h1>Student Records</h1>
+
+<table border="1">
+
+<tr>
+    <th>SID</th>
+    <th>Name</th>
+    <th>Qualification</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Trainer</th>
+    <th>Course</th>
+    <th>Status</th>
+</tr>
+
+{% for s in students %}
+
+<tr>
+    <td>{{ s.sid }}</td>
+    <td>{{ s.name }}</td>
+    <td>{{ s.qualification }}</td>
+    <td>{{ s.email }}</td>
+    <td>{{ s.phno }}</td>
+    <td>{{ s.trainer }}</td>
+    <td>{{ s.course }}</td>
+    <td>{{ s.status }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/">
+    <button>Back</button>
+</a>
+
+</body>
+</html>

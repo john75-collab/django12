@@ -1,0 +1,38 @@
+<form method="post">
+
+    {% csrf_token %}
+
+    <label>sid:</label>
+    {{ form.sid }}
+
+    <label>name:</label>
+    {{ form.name }}
+
+    <label>qualification:</label>
+    {{ form.qualification }}
+
+    <label>email:</label>
+    {{ form.email }}
+
+    <label>phno:</label>
+    {{ form.phno }}
+
+    <label>trainer:</label>
+    {{ form.trainer }}
+
+    <label>course:</label>
+    {{ form.course }}
+
+    <label>status:</label>
+    {{ form.status }}
+
+    <button type="submit">
+        Submit
+    </button>
+
+</form>
+<a href="/viewstudents/">
+    <button type="button">
+        View Students
+    </button>
+</a>
