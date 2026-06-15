@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import studentForm
 from .models import student
 
@@ -34,4 +34,35 @@ def view_students(request):
         request,
         'students.html',
         {'students': students}
+    )
+def delete_student(request, id):
+
+    data = student.objects.get(id=id)
+
+    data.delete()
+
+    return redirect('/viewstudents/')
+def edit_student(request, id):
+
+    data = student.objects.get(id=id)
+
+    if request.method == "POST":
+
+        data.sid = request.POST['sid']
+        data.name = request.POST['name']
+        data.qualification = request.POST['qualification']
+        data.email = request.POST['email']
+        data.phno = request.POST['phno']
+        data.trainer = request.POST['trainer']
+        data.course = request.POST['course']
+        data.status = request.POST['status']
+
+        data.save()
+
+        return redirect('/viewstudents/')
+
+    return render(
+        request,
+        'edit.html',
+        {'student': data}
     )
