@@ -11,3 +11,14 @@ class student (models.Model):
     status=models.CharField(max_length=100)
     def __str__(self):
         return self.name
+
+class Login(models.Model):
+
+    name = models.CharField(max_length=100)
+
+    password = models.CharField(max_length=100)
+
+    role = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name

@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import studentForm
-from .models import student
+from .models import student, Login
+from .forms import LoginForm
 
-def home(request):
+def student_page(request):
 
     if request.method == "POST":
 
@@ -66,3 +67,45 @@ def edit_student(request, id):
         'edit.html',
         {'student': data}
     )
+def login(request):
+
+    if request.method == "POST":
+
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+
+            name = form.cleaned_data['name']
+            password = form.cleaned_data['password']
+            role = form.cleaned_data['role']
+
+            Login.objects.create(
+                name=name,
+                password=password,
+                role=role
+            )
+            if role == "student":
+
+                return redirect('/student/')
+
+            elif role == "staff":
+
+                return render(
+                    request,
+                    "role.html",
+                    {"role": "Staff"}
+                )
+
+            elif role == "admin":
+
+                return render(
+                    request,
+                    "role.html",
+                    {"role": "Admin"}
+                )
+
+    else:
+
+        form = LoginForm()
+
+    return render(request, "login.html", {"form": form})

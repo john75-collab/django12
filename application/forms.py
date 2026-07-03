@@ -8,3 +8,16 @@ class studentForm(forms.Form):
     trainer=forms.CharField(max_length=100)
     course=forms.CharField(max_length=100)
     status=forms.CharField(max_length=100)
+class LoginForm(forms.Form):
+
+    name = forms.CharField(max_length=100)
+
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    ROLE_CHOICES = [
+        ('student', 'Student'),
+        ('staff', 'Staff'),
+        ('admin', 'Admin'),
+    ]
+
+    role = forms.ChoiceField(choices=ROLE_CHOICES)

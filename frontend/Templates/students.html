@@ -19,6 +19,7 @@
     <th>Course</th>
     <th>Status</th>
     <th>Actions</th>
+    <th>Role</th>
 </tr>
 
 {% for s in students %}
@@ -32,6 +33,7 @@
     <td>{{ s.trainer }}</td>
     <td>{{ s.course }}</td>
     <td>{{ s.status }}</td>
+    <td>{{ s.role }}</td>
 
     <td>
         <a href="/delete/{{ s.id }}/"
