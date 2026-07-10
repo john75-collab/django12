@@ -24,7 +24,14 @@ def student_page(request):
 
     form = studentForm()
 
-    return render(request, 'index.html', {'form': form})
+    return render(
+        request,
+        'index.html',
+        {
+            'form': form,
+            'role': request.session.get('role')
+        }
+    )
 
 
 def view_students(request):
@@ -34,9 +41,17 @@ def view_students(request):
     return render(
         request,
         'students.html',
-        {'students': students}
+        {
+            'students': students,
+            'role': request.session.get('role')
+        }
     )
 def delete_student(request, id):
+
+    role = request.session.get('role')
+
+    if role != 'admin':
+        return redirect('/student/')
 
     data = student.objects.get(id=id)
 
@@ -44,6 +59,11 @@ def delete_student(request, id):
 
     return redirect('/viewstudents/')
 def edit_student(request, id):
+
+    role = request.session.get('role')
+
+    if role not in ['staff', 'admin']:
+        return redirect('/student/')
 
     data = student.objects.get(id=id)
 
@@ -69,6 +89,8 @@ def edit_student(request, id):
     )
 def login(request):
 
+    form = LoginForm()
+
     if request.method == "POST":
 
         form = LoginForm(request.POST)
@@ -84,28 +106,10 @@ def login(request):
                 password=password,
                 role=role
             )
-            if role == "student":
 
-                return redirect('/student/')
+            request.session['role'] = role
+            request.session['name'] = name
 
-            elif role == "staff":
-
-                return render(
-                    request,
-                    "role.html",
-                    {"role": "Staff"}
-                )
-
-            elif role == "admin":
-
-                return render(
-                    request,
-                    "role.html",
-                    {"role": "Admin"}
-                )
-
-    else:
-
-        form = LoginForm()
+            return redirect('/student/')
 
     return render(request, "login.html", {"form": form})

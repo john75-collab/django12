@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>{% load static %}
+<link rel="stylesheet" href="{% static '/style.css' %}"></head>
+<body>
+<div class="container">
 <form method="post">
 
     {% csrf_token %}
@@ -26,8 +32,8 @@
     <label>status:</label>
     {{ form.status }}
 
-    <label>role:</label>
-    {{ form.role }}
+    <!-- <label>role:</label>
+    {{ form.role }} -->
 
     <button type="submit">
         Submit
@@ -39,3 +45,6 @@
         View Students
     </button>
 </a>
+</div>
+</body>
+</html>
