@@ -1,50 +1,87 @@
 <!DOCTYPE html>
 <html>
-<head>{% load static %}
-<link rel="stylesheet" href="{% static '/style.css' %}"></head>
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/style.css' %}">
+</head>
+
 <body>
+
 <div class="container">
-<form method="post">
 
-    {% csrf_token %}
+    <h1>Student Management System</h1>
 
-    <label>sid:</label>
-    {{ form.sid }}
+    <h3>Welcome {{ request.session.name }}</h3>
 
-    <label>name:</label>
-    {{ form.name }}
+    <p>
+        <b>Role :</b> {{ role|title }}
+    </p>
 
-    <label>qualification:</label>
-    {{ form.qualification }}
+    {% if role == "student" %}
 
-    <label>email:</label>
-    {{ form.email }}
+    <h2>Student Details</h2>
 
-    <label>phno:</label>
-    {{ form.phno }}
+    <form method="POST">
 
-    <label>trainer:</label>
-    {{ form.trainer }}
+        {% csrf_token %}
 
-    <label>course:</label>
-    {{ form.course }}
+        <label>SID</label>
+        {{ form.sid }}
 
-    <label>status:</label>
-    {{ form.status }}
+        <label>Name</label>
+        {{ form.name }}
 
-    <!-- <label>role:</label>
-    {{ form.role }} -->
+        <label>Qualification</label>
+        {{ form.qualification }}
 
-    <button type="submit">
-        Submit
-    </button>
+        <label>Email</label>
+        {{ form.email }}
 
-</form>
-<a href="/viewstudents/">
-    <button type="button">
-        View Students
-    </button>
-</a>
+        <label>Phone</label>
+        {{ form.phno }}
+
+        <label>Trainer</label>
+        {{ form.trainer }}
+
+        <label>Course</label>
+        {{ form.course }}
+
+        <label>Status</label>
+        {{ form.status }}
+
+        <button type="submit">
+            Submit
+        </button>
+
+    </form>
+
+    {% else %}
+
+    <div class="welcome-box">
+
+        <h2>Welcome {{ role|title }}</h2>
+
+        <p>
+            Student registration is available only for users with the Student role.
+        </p>
+
+        <p>
+            Click <b>View Students</b> to manage student records.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+    <br>
+
+    <a href="/viewstudents/">
+        <button type="button">
+            View Students
+        </button>
+    </a>
+
 </div>
+
 </body>
 </html>

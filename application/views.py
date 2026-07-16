@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.models import User
+
+from .models import student, Login, Profile
+
 from .forms import studentForm
-from .models import student, Login
 from .forms import LoginForm
+from .forms import RegisterForm
 
 def student_page(request):
 
@@ -97,19 +102,87 @@ def login(request):
 
         if form.is_valid():
 
+            username = form.cleaned_data['name']
+            password = form.cleaned_data['password']
+
+            # Authenticate user
+            user = authenticate(
+                username=username,
+                password=password
+            )
+
+            if user is not None:
+
+                auth_login(request, user)
+
+                # Get role from Profile table
+                profile = Profile.objects.get(user=user)
+
+                print("Logged in user:", user.username)
+                print("Profile role:", profile.role)
+
+                request.session['role'] = profile.role
+
+                print("Session role:", request.session['role'])
+
+                # Save login history
+                Login.objects.create(
+                    user=user,
+                    role=profile.role
+                )
+
+                # Store session
+                request.session['role'] = profile.role
+                request.session['name'] = user.first_name
+
+                return redirect('/student/')
+
+            else:
+
+                return render(
+                    request,
+                    "login.html",
+                    {
+                        "form": form,
+                        "error": "Invalid Username or Password"
+                    }
+                )
+
+    return render(request, "login.html", {"form": form})
+def register(request):
+
+    form = RegisterForm()
+
+    if request.method == "POST":
+
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+
             name = form.cleaned_data['name']
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             role = form.cleaned_data['role']
 
-            Login.objects.create(
-                name=name,
+            # Create Django User
+            user = User.objects.create_user(
+                username=username,
+                email=email,
                 password=password,
+                first_name=name
+            )
+
+            # Save role
+            Profile.objects.create(
+                user=user,
                 role=role
             )
 
-            request.session['role'] = role
-            request.session['name'] = name
+            return redirect('/')
 
-            return redirect('/student/')
-
-    return render(request, "login.html", {"form": form})
+    return render(
+        request,
+        'register.html',
+        {'form': form}
+    )

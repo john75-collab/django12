@@ -2,25 +2,51 @@
 <html>
 <head>
     <title>Login</title>
+
     {% load static %}
-    <link rel="stylesheet" href="{% static '/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
+
 <body>
+
 <div class="login-card">
 
-<h1>Login Page</h1>
+    <h1>Login Page</h1>
 
-<form method="POST">
+    <form method="POST">
 
-    {% csrf_token %}
+        {% csrf_token %}
 
-    {{ form.as_p }}
+        {% if error %}
+            <p style="color:red;">
+                {{ error }}
+            </p>
+        {% endif %}
 
-    <button type="submit">
-        Login
-    </button>
+        {{ form.as_p }}
 
-</form>
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <hr>
+
+    <p style="text-align:center;">
+        Don't have an account?
+    </p>
+
+    <div style="text-align:center;">
+        <a href="/register/">
+            <button type="button">
+                Register
+            </button>
+        </a>
+    </div>
+
 </div>
+
 </body>
 </html>

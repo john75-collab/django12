@@ -1,67 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Students</title>
+    <title>Student Records</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static '/style.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
+
 <div class="table-container">
-<h1>Student Records</h1>
 
-<table border="1">
+    <h1>Student Records</h1>
 
-<tr>
-    <th>SID</th>
-    <th>Name</th>
-    <th>Qualification</th>
-    <th>Email</th>
-    <th>Phone</th>
-    <th>Trainer</th>
-    <th>Course</th>
-    <th>Status</th>
-    <!-- <th>Actions</th> -->
-    <th>Role</th>
-</tr>
+    <table>
 
-{% for s in students %}
+        <tr>
+            <th>SID</th>
+            <th>Name</th>
+            <th>Qualification</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Trainer</th>
+            <th>Course</th>
+            <th>Status</th>
 
-<tr>
-    <td>{{ s.sid }}</td>
-    <td>{{ s.name }}</td>
-    <td>{{ s.qualification }}</td>
-    <td>{{ s.email }}</td>
-    <td>{{ s.phno }}</td>
-    <td>{{ s.trainer }}</td>
-    <td>{{ s.course }}</td>
-    <td>{{ s.status }}</td>
-    <td>{{ s.role }}</td>
+            {% if role == "staff" or role == "admin" %}
+                <th>Edit</th>
+            {% endif %}
 
-    {% if role == "staff" or role == "admin" %}
-    <td>
-       <a href="/edit/{{ s.id }}/" class="action-btn edit">
-        Edit
-       </a>
-    </td>
-    {% endif %}
+            {% if role == "admin" %}
+                <th>Delete</th>
+            {% endif %}
+        </tr>
 
-    {% if role == "admin" %}
-    <td>
-        <a href="/delete/{{ s.id }}/" class="action-btn delete">
-        Delete
-        </a>
-    </td>
-    {% endif %}
+        {% for s in students %}
 
-</tr>
+        <tr>
 
-{% endfor %}
-</table>
-<br>
+            <td>{{ s.sid }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.qualification }}</td>
+            <td>{{ s.email }}</td>
+            <td>{{ s.phno }}</td>
+            <td>{{ s.trainer }}</td>
+            <td>{{ s.course }}</td>
+            <td>{{ s.status }}</td>
 
-<a href="/student/">
-    <button>Back</button>
-</a>
+            {% if role == "staff" or role == "admin" %}
+            <td>
+                <a href="/edit/{{ s.id }}/" class="action-btn edit">
+                    Edit
+                </a>
+            </td>
+            {% endif %}
+
+            {% if role == "admin" %}
+            <td>
+                <a href="/delete/{{ s.id }}/" class="action-btn delete"
+                   onclick="return confirm('Are you sure you want to delete this student?');">
+                    Delete
+                </a>
+            </td>
+            {% endif %}
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <br>
+
+    <a href="/student/">
+        <button>Back</button>
+    </a>
+
 </div>
+
 </body>
 </html>
